@@ -4,4 +4,5 @@
     <style name="Texas" parent="android:Theme.Material.Light.NoActionBar" >
         <item name="android:colorForeground">@android:color/background_light</item>
     </style>
+
 </resources>

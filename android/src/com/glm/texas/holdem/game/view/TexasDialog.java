@@ -8,8 +8,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.glm.texas.holdem.game.R;
+import com.glm.texas.holdem.game.utils.MediaHelper;
 
 /**
  * Created by gianluca on 05/08/16.
@@ -17,6 +19,8 @@ import com.glm.texas.holdem.game.R;
 public class TexasDialog extends Dialog {
     private Button mOk=null;
     private Button mKo=null;
+    private TextView mText=null;
+
     private Context mContext=null;
 
     public TexasDialog(final Context context) {
@@ -27,6 +31,9 @@ public class TexasDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.texas_dialog, null);
+
+        mText=(TextView) dialogView.findViewById(R.id.alert_text);
+
         mOk=(Button) dialogView.findViewById(R.id.ok_btn);
         mKo=(Button) dialogView.findViewById(R.id.ko_btn);
         setContentView(dialogView);
@@ -42,6 +49,7 @@ public class TexasDialog extends Dialog {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         v.setBackground(context.getDrawable(R.drawable.buttonshape));
                     }
+                    MediaHelper.clickSound(mContext);
                 }
                 return false;
             }
@@ -58,6 +66,7 @@ public class TexasDialog extends Dialog {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         v.setBackground(context.getDrawable(R.drawable.buttonshape));
                     }
+                    MediaHelper.clickSound(mContext);
                 }
                 return false;
             }
@@ -71,4 +80,7 @@ public class TexasDialog extends Dialog {
         return mKo;
     }
 
+    public void setText(String text){
+        mText.setText(text);
+    }
 }

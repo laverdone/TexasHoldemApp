@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
-            android:id="@+id/textView"
+            android:id="@+id/alert_text"
             android:textSize="20sp"
             android:shadowColor="#000000"
             android:shadowDx="3"

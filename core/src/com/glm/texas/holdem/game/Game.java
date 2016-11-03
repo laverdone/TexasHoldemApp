@@ -25,6 +25,7 @@ public class Game {
     private volatile int mGameStatus=0;
     private volatile String mGameStatusDesc="initial timeout";
 
+    private volatile Player mGamePlayer;
 
     private volatile Vector<Player> mPlayers = new Vector<Player>();
 
@@ -136,6 +137,20 @@ public class Game {
             i++;
         }
     }
+
+    /**
+     * get player in game
+     * */
+    public Player getGamePlayer(){
+        return mGamePlayer;
+    }
+    /**
+     * set player in game
+     * */
+    public void setGamePlayer(Player player){
+        mGamePlayer=player;
+    }
+
 
     public void setGameStatus(int gameStatus) {
         mGameStatus = gameStatus;

@@ -1,53 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:background="@color/alertDialog"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@drawable/alert_dialog_roundcorner">
-    <Button
-        android:id="@+id/new_game_btn"
+    android:padding="10dp">
 
-        android:text="New Game"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/home_banner_id" />
 
-        android:layout_width="250dp"
-        android:layout_height="74dp"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#000000"
-        android:shadowDx="3"
-        android:shadowDy="3"
-        android:shadowRadius="1"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@drawable/frame"
+        android:id="@+id/banner"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/adView"
+        android:layout_alignRight="@+id/buttons"
+        android:layout_alignEnd="@+id/buttons"
+        android:padding="5dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="120dp"
+            android:id="@+id/deck"
+            android:src="@drawable/deck"
+            android:background="@android:color/transparent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="false" />
 
-    <Button
-        android:id="@+id/setting_btn"
-        android:layout_marginTop="20dp"
-        android:text="Settings"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/imageView"
+            android:src="@drawable/chipblackwhite_border"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:background="@android:color/transparent" />
 
-        android:layout_width="250dp"
-        android:layout_height="74dp"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#000000"
-        android:shadowDx="3"
-        android:shadowDy="3"
-        android:shadowRadius="1"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/imageView1"
+            android:src="@drawable/chipredwhite_border"
+            android:background="@android:color/transparent"
+            android:layout_alignBottom="@+id/imageView4"
+            android:layout_alignRight="@+id/imageView2"
+            android:layout_alignEnd="@+id/imageView2"
+            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp" />
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/imageView4"
+            android:src="@drawable/chipbluewhite_border"
+            android:background="@android:color/transparent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/imageView2"
+            android:src="@drawable/chipbluewhite_border"
+            android:elevation="20dp"
+            android:background="@android:color/transparent"
+            android:layout_marginRight="14dp"
+            android:layout_marginEnd="14dp"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_toLeftOf="@+id/deck"
+            android:layout_toStartOf="@+id/deck" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:id="@+id/imageView3"
+            android:src="@drawable/chipgreenwhite_border"
+            android:background="@android:color/transparent"
+            android:layout_alignTop="@+id/imageView"
+            android:layout_alignLeft="@+id/imageView1"
+            android:layout_alignStart="@+id/imageView1"
+            android:layout_marginTop="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/app_name"
+            android:id="@+id/textView"
+            android:shadowColor="#000000"
+            android:shadowDx="3"
+            android:shadowDy="3"
+            android:shadowRadius="1"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
+            android:background="@android:color/transparent"
+            android:layout_below="@+id/deck"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:capitalize="words"
+            android:elevation="20dp"
+            android:gravity="bottom|center"
+            android:layout_marginTop="20dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adView"
+        android:id="@+id/buttons"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="230dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
 
     <Button
         android:id="@+id/exit_btn"
-        android:layout_marginTop="20dp"
-        android:text="Exit"
-        android:textColor="#FFFFFF"
-        android:textSize="32sp"
-
-        android:layout_width="250dp"
+        android:layout_width="308dp"
         android:layout_height="74dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
         android:background="@drawable/buttonshape"
         android:shadowColor="#000000"
         android:shadowDx="3"
         android:shadowDy="3"
-        android:shadowRadius="1"/>
-</LinearLayout>
+        android:shadowRadius="1"
+        android:text="Exit"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/new_game_btn"
+        android:layout_width="322dp"
+        android:layout_height="74dp"
+        android:layout_above="@+id/setting_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:text="New Game"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:layout_gravity="center_horizontal|top" />
+
+    <Button
+        android:id="@+id/setting_btn"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:layout_above="@+id/exit_btn"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:text="Settings"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"/>
+    </RelativeLayout>
+</RelativeLayout>

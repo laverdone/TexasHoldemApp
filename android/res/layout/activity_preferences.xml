@@ -8,9 +8,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.glm.texas.holdem.game.PreferencesActivity"
-    android:id="@+id/main_preferences">
+    android:id="@+id/main_preferences"
+    android:background="@color/alertDialog">
 
     <Switch
+        android:drawableLeft="@drawable/quantum_ic_volume_mute_white_36"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/enable_sound_btn"
@@ -29,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sign_in_button"
-        android:drawableLeft="@drawable/sign_in"
+        android:drawableLeft="@drawable/common_google_signin_btn_icon_dark"
         android:text="Sign In"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
@@ -41,8 +43,62 @@
         android:layout_below="@+id/enable_sound_btn"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingLeft="10dp"/>
+        android:paddingLeft="10dp"
+        android:layout_marginTop="10dp"/>
 
+
+    <Button
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/remove_ads_button"
+        android:text="Remove Ads"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/sign_in_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buy_coin_button"
+        android:text="Buy Fiches"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:paddingLeft="10dp"
+        android:layout_below="@+id/remove_ads_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rate_button"
+        android:text="Rate"
+        android:textColor="#FFFFFF"
+        android:textSize="32sp"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="#000000"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1"
+        android:paddingLeft="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
      <!--   <Button
             android:layout_width="wrap_content"

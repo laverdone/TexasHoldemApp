@@ -4,6 +4,10 @@ package com.glm.texas.holdem.game;
  * Created by gianluca on 11/07/16.
  */
 public class Const {
+    //PRODUCTION public final static String HOST_NAME="texasholdem.ns0.it";
+    public final static String HOST_NAME="192.168.1.76";
+    public final static int HOST_PORT=32100;
+
     public final static int MIN_OPEN_GAME=4100;
 
     /**
@@ -30,4 +34,5 @@ public class Const {
     public static final boolean DEBUG=false;
 
     public static final boolean CLEAR_COMMAND =true;
+    public static final float MY_CARD_OFFSET = 4f;
 }

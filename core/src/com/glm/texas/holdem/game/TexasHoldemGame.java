@@ -166,6 +166,18 @@ public class TexasHoldemGame extends ApplicationAdapter  implements InputProcess
 		for(int i = 0; i < mMyCards.size(); i++)
 		{
 			Gdx.app.log("debug","rect_y: "+mMyCards.get(i).getY()+" rect_x: "+mMyCards.get(i).getX());
+			Gdx.app.log("debug","y: "+Gdx.input.getY()+" rect_min_y: "+mMyCards.get(i).getY()+" rect_max_y:"+
+					mMyCards.get(i).getY()+mMyCards.get(i).getHeight());
+			Gdx.app.log("debug","x: "+Gdx.input.getX()+" rect_min_x: "+mMyCards.get(i).getX()+" rect_max_x:"+
+					mMyCards.get(i).getX()+mMyCards.get(i).getWidth());
+			if(Gdx.input.getY() >= 	mMyCards.get(i).getY() &&
+					Gdx.input.getY() <= mMyCards.get(i).getY()+mMyCards.get(i).getHeight()
+					&&
+					Gdx.input.getX() >= mMyCards.get(i).getX() &&
+					Gdx.input.getX() <= mMyCards.get(i).getX()+mMyCards.get(i).getWidth()){
+
+
+			}
 			if(rect.overlaps(mMyCards.get(i).getBoundingRectangle()))
 			{
 				mMyCards.get(i).getBoundingRectangle().setSize(mMyCards.get(i).getBoundingRectangle().getWidth()*2,mMyCards.get(i).getBoundingRectangle().getHeight()*2);

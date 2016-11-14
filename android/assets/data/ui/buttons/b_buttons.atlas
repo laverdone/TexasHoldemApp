@@ -1,0 +1,117 @@
+b_buttons.atlas.png
+size: 428, 1912
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_minus_dis
+  rotate: false
+  xy: 0, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_minus_sel
+  rotate: false
+  xy: 214, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_minus_unsel
+  rotate: false
+  xy: 0, 239
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_no_dis
+  rotate: false
+  xy: 214, 239
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_no_sel
+  rotate: false
+  xy: 0, 478
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_no_unsel
+  rotate: false
+  xy: 214, 478
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_nosound_sel
+  rotate: false
+  xy: 0, 717
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_nosound_unsel
+  rotate: false
+  xy: 214, 717
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_play_dis
+  rotate: false
+  xy: 0, 956
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_play_sel
+  rotate: false
+  xy: 214, 956
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_play_unsel
+  rotate: false
+  xy: 0, 1195
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_plus_dis
+  rotate: false
+  xy: 214, 1195
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_plus_sel
+  rotate: false
+  xy: 0, 1434
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_plus_unsel
+  rotate: false
+  xy: 214, 1434
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_sound_sel
+  rotate: false
+  xy: 0, 1673
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_sound_unsel
+  rotate: false
+  xy: 214, 1673
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1

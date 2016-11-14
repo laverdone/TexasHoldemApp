@@ -1,0 +1,19 @@
+b_nosound.atlas.png
+size: 428, 239
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_nosound_sel
+  rotate: false
+  xy: 0, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_nosound_unsel
+  rotate: false
+  xy: 214, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1

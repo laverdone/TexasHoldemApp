@@ -1,0 +1,19 @@
+b_play.atlas.png
+size: 428, 239
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+b_play_sel
+  rotate: false
+  xy: 0, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1
+b_play_unsel
+  rotate: false
+  xy: 214, 0
+  size: 214, 239
+  orig: 214, 239
+  offset: 0, 0
+  index: -1

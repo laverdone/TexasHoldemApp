@@ -2,6 +2,7 @@ package com.glm.texas.holdem.game.bean;
 
 
 import com.glm.texas.holdem.game.Const;
+import com.glm.texas.holdem.game.Game;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,8 @@ import java.util.Date;
  * Created by gianluca on 07/07/16.
  */
 public class Player {
+    private static volatile Player mMyInstance;
+
     private volatile Hand mHand=null;
     private volatile String mName="";
     private volatile int mMoney= Const.INITIAL_MONEY;
@@ -20,12 +23,19 @@ public class Player {
     private volatile boolean isPlayCurrentGame=true;
 
 
+    /**puntare*/
     private volatile boolean isBet=false;
+    /**passare bussare dare la parola*/
     private volatile boolean isCheck=false;
+
+    /**vedere o chiamare*/
+    private volatile boolean isCall=false;
+    /**lasciare il gioco*/
     private volatile boolean isFold=false;
     private volatile boolean isLook=false;
 
-
+    /**if user can open the game*/
+    private volatile boolean canOpen=false;
 
     private volatile boolean isClientResponse=false;
 
@@ -64,6 +74,27 @@ public class Player {
 
     public synchronized boolean isClientResponse() {
         return isClientResponse;
+    }
+
+    /**
+     * Call for single instance
+     * */
+    public static void setInstance(Player instance) {
+        mMyInstance = instance;
+    }
+
+    /**
+     * Call for single instance
+     * */
+    public static Player getInstance(){
+        if(mMyInstance==null){
+            synchronized (Game.class){
+                if(mMyInstance==null){
+                    mMyInstance=new Player();
+                }
+            }
+        }
+        return mMyInstance;
     }
 
     public synchronized void setClientResponse(boolean clientResponse) {
@@ -159,5 +190,20 @@ public class Player {
        isClientResponse=false;
        isWinner=false;
        isPlayCurrentGame=true;
+       canOpen=false;
+    }
+    public boolean isCanOpen() {
+        return canOpen;
+    }
+
+    public void setCanOpen(boolean canOpen) {
+        this.canOpen = canOpen;
+    }
+    public boolean isCall() {
+        return isCall;
+    }
+
+    public void setIsCall(boolean isCall) {
+        this.isCall = isCall;
     }
 }

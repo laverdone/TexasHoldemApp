@@ -2,6 +2,7 @@ package com.glm.texas.holdem.game.net.node;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.glm.texas.holdem.game.Const;
 import com.glm.texas.holdem.game.Game;
 
@@ -17,7 +18,6 @@ import com.google.gson.JsonSyntaxException;
 import java.io.*;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.Vector;
 
 
 /**
@@ -25,7 +25,10 @@ import java.util.Vector;
  * bead class user by MasterNode for Cluster implementation
  */
 public class CommunicationTunnel implements Runnable {
+
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+    private boolean isRun=true;
 
     /**
      * IP Address of node
@@ -79,8 +82,15 @@ public class CommunicationTunnel implements Runnable {
     private Message mMessage = new Message();
     private Player mCurrentUmanPlayer = null;
     private String mMessageSended = null;
+    private Preferences mPrefs;
+
+
+
+
+
 
     public CommunicationTunnel(String clusterID, Socket oSocket, MasterNode oParentServer) {
+
         mSocketClient = oSocket;
         mMasterSocket = oParentServer;
         mClusterID = clusterID;
@@ -94,7 +104,16 @@ public class CommunicationTunnel implements Runnable {
     @Override
     public void run() {
 
+
         try {
+            while(Gdx.app==null){
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            mPrefs = Gdx.app.getPreferences(Const.PREF_FILE);
 
             //TODO
             //Gdx.app.log("info","Communication Channel");
@@ -119,11 +138,11 @@ public class CommunicationTunnel implements Runnable {
 
             String line;
 
-            while (true) {
+            while (isRun) {
                 try {
                     //TODO
                     line = oBR.readLine();
-                    if (Gdx.app != null)
+                    if (Const.DEBUG && Gdx.app != null)
                         Gdx.app.log("debug", "Response Message From Server:" + line);
                     if (line == null) break;
 
@@ -135,73 +154,83 @@ public class CommunicationTunnel implements Runnable {
                     mCurrentUmanPlayer.setClientResponse(true);
 
                     if (mMessage.getMessage().equals("assign_slot")) {
-                        Game tmpGame = mMessage.getCurrentGame();
+                        Game tmpOnLineGame = mMessage.getCurrentGame();
                         Player tmpPlayer = mMessage.getPlayer();
-                        tmpPlayer.setName("Gianluca Masci");
+                        tmpPlayer.setName(mPrefs.getString("personName"));
                         tmpPlayer.setBot(false);
                         tmpPlayer.setMoney(2001);
                         mMessage.setPlayer(tmpPlayer);
                         mMessage.setMessage("user_player");
-                        tmpGame.setGamePlayer(tmpPlayer);
-                        mMasterSocket.setGame(tmpGame);
+                        tmpOnLineGame.setGamePlayer(tmpPlayer);
+                        Game.setInstance(mMessage.getCurrentGame());
+                        Player.setInstance(tmpPlayer);
                     }else if (mMessage.getMessage().equals("join_room_ok")) {
-                        mMessage.getCurrentGame().setGamePlayer(mMessage.getPlayer());
-                        mMasterSocket.setGame(mMessage.getCurrentGame());
+                        mMessage.getCurrentGame().setGamePlayer(Player.getInstance());
+                        Game.setInstance(mMessage.getCurrentGame());
 
                     }else if (mMessage.getMessage().equals("wait_game")) {
-                        mMessage.getCurrentGame().setGamePlayer(mMessage.getPlayer());
-                        mMasterSocket.setGame(mMessage.getCurrentGame());
+                        mMessage.getCurrentGame().setGamePlayer(Player.getInstance());
+                        Game.setInstance(mMessage.getCurrentGame());
+
                     }else if (mMessage.getMessage().equals("open_game")) {
-                        mMessage.getCurrentGame().setGamePlayer(mMessage.getPlayer());
-                        mMasterSocket.setGame(mMessage.getCurrentGame());
+                        Player.setInstance(mMessage.getPlayer());
+                        mMessage.getCurrentGame().setGamePlayer(Player.getInstance());
+                        Game.setInstance(mMessage.getCurrentGame());
+
                     }else if (mMessage.getMessage().equals("first_bet")) {
-                        Game tmpGame = mMessage.getCurrentGame();
-                        Player tmpPlayer = mMessage.getPlayer();
-                        if (tmpGame.getDeck().isOpen()) {
+                        //TODO Implementing "response_first_bet"
+
+                        /*Game tmpOnLineGame = mMessage.getCurrentGame();
+                        Player tmpPlayer = Player.getInstance();
+                        if (tmpOnLineGame.getDeck().isOpen()) {
                             //Game is Open
-                            tmpPlayer.setMoney(tmpPlayer.getMoney() - tmpGame.getDeck().getCurrentBet());
+                            tmpPlayer.setMoney(tmpPlayer.getMoney() - tmpOnLineGame.getDeck().getCurrentBet());
                             mMessage.setPlayer(tmpPlayer);
                             mMessage.setMessage("response_first_bet");
-                            tmpGame.getDeck().setMoney(tmpGame.getDeck().getMoney() + tmpGame.getDeck().getCurrentBet());
+                            tmpOnLineGame.getDeck().setMoney(tmpOnLineGame.getDeck().getMoney() + tmpOnLineGame.getDeck().getCurrentBet());
                         } else {
                             tmpPlayer.setMoney(tmpPlayer.getMoney() - 1);
                             mMessage.setPlayer(tmpPlayer);
                             mMessage.setMessage("response_first_bet");
-                            tmpGame.getDeck().setMoney(1);
-                            tmpGame.getDeck().setCurrentBet(1);
-                            tmpGame.getDeck().setOpen(true);
+                            tmpOnLineGame.getDeck().setMoney(1);
+                            tmpOnLineGame.getDeck().setCurrentBet(1);
+                            tmpOnLineGame.getDeck().setOpen(true);
                         }
-                        /** HashMap<Integer, Card> tmpCards = tmpPlayer.getHand().displayAll();
+                        *//** HashMap<Integer, Card> tmpCards = tmpPlayer.getHand().displayAll();
                          for (Integer key : tmpCards.keySet()) {
                          Card tmpCard = tmpCards.get(key);
                          tmpCard.setHoldCard(false);
                          tmpPlayer.getHand().displayAll().put(key, tmpCard);
-                         }*/
+                         }*//*
                         tmpPlayer.setClientResponse(true);
                         mMessage.setPlayer(tmpPlayer);
-                        mMessage.setCurrentGame(tmpGame);
-                        mMasterSocket.setGame(tmpGame);
+                        mMessage.setCurrentGame(tmpOnLineGame);
+                        */
+                        Game.setInstance(mMessage.getCurrentGame());
                     } else if (mMessage.getMessage().equals("turn_over_players")) {
                         try {
                             Thread.sleep(3000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        Game tmpGame = mMessage.getCurrentGame();
-                        Player tmpPlayer = mMessage.getPlayer();
-                        if (tmpGame.getDeck().isOpen()) {
+                        Game tmpOnLineGame = mMessage.getCurrentGame();
+                        if (Const.DEBUG)
+                            Gdx.app.log(this.getClass().getCanonicalName(), "set current player to single static object");
+
+                        Player tmpPlayer = Player.getInstance();
+                        if (tmpOnLineGame.getDeck().isOpen()) {
                             //Game is Open
-                            tmpPlayer.setMoney(tmpPlayer.getMoney() - tmpGame.getDeck().getCurrentBet());
+                            tmpPlayer.setMoney(tmpPlayer.getMoney() - tmpOnLineGame.getDeck().getCurrentBet());
                             mMessage.setPlayer(tmpPlayer);
                             mMessage.setMessage("response_turn_player");
-                            tmpGame.getDeck().setMoney(tmpGame.getDeck().getMoney() + tmpGame.getDeck().getCurrentBet());
+                            tmpOnLineGame.getDeck().setMoney(tmpOnLineGame.getDeck().getMoney() + tmpOnLineGame.getDeck().getCurrentBet());
                         } else {
                             tmpPlayer.setMoney(tmpPlayer.getMoney() - 1);
                             mMessage.setPlayer(tmpPlayer);
                             mMessage.setMessage("response_turn_player");
-                            tmpGame.getDeck().setMoney(1);
-                            tmpGame.getDeck().setCurrentBet(1);
-                            tmpGame.getDeck().setOpen(true);
+                            tmpOnLineGame.getDeck().setMoney(1);
+                            tmpOnLineGame.getDeck().setCurrentBet(1);
+                            tmpOnLineGame.getDeck().setOpen(true);
                         }
                         tmpPlayer.getHand().getCard(1).setHoldCard(true);
                         tmpPlayer.getHand().getCard(2).setHoldCard(true);
@@ -209,8 +238,14 @@ public class CommunicationTunnel implements Runnable {
                         tmpPlayer.getHand().getCard(4).setHoldCard(true);
                         tmpPlayer.setClientResponse(true);
                         mMessage.setPlayer(tmpPlayer);
-                        mMessage.setCurrentGame(tmpGame);
-                        mMasterSocket.setGame(tmpGame);
+                        mMessage.setCurrentGame(tmpOnLineGame);
+                        Game.setInstance(mMessage.getCurrentGame());
+                    }else if(mMessage.getMessage().equals("final_bet")){
+                        Player.setInstance(mMessage.getPlayer());
+                        mMessage.getCurrentGame().setGamePlayer(Player.getInstance());
+                        Game.setInstance(mMessage.getCurrentGame());
+
+
                     } else {
                         if (Gdx.app != null) Gdx.app.log("debug", "New Incoming Message");
                         if (Gdx.app != null) Gdx.app.log("debug", line);
@@ -218,7 +253,8 @@ public class CommunicationTunnel implements Runnable {
                 } catch (JsonSyntaxException e) {
                     if (Gdx.app != null) Gdx.app.log("error", "Message is not a message");
                 }
-                sendMessageToClient(mMessage);
+                mCurrentRoom=Game.getInstance();
+                sendMessageToServer(mMessage);
 
                 /**
                  * workflow
@@ -283,7 +319,7 @@ public class CommunicationTunnel implements Runnable {
                     }
 
                     //My Turn sent Message To Client
-                    sendMessageToClient();
+                    sendMessageToServer();
 
                     try {
                         Thread.sleep(2000);
@@ -299,7 +335,7 @@ public class CommunicationTunnel implements Runnable {
 
 
     //Send Message to Client
-    private void sendMessageToClient() {
+    private void sendMessageToServer() {
         if (mCurrentRoom == null) return;
 
         Message tmpMessage = new Message();
@@ -330,8 +366,8 @@ public class CommunicationTunnel implements Runnable {
         }
     }
 
-    //Send Message to Client
-    private void sendMessageToClient(Message messageToSend) {
+    //Send Message to Server
+    private void sendMessageToServer(Message messageToSend) {
         try {
             oBW.write(cryptCommand(messageToSend));
             oBW.newLine();
@@ -342,6 +378,36 @@ public class CommunicationTunnel implements Runnable {
         }
     }
 
+    public void sendMessageToServer(int responseType) {
+        try {
+            if (mCurrentRoom == null) return;
+
+            Message tmpMessage = new Message();
+            tmpMessage.setCurrentGame(Game.getInstance());
+            tmpMessage.setPlayer(Player.getInstance());
+            if (responseType == 2) {
+                tmpMessage.setMessage("response_first_bet");
+            } else if (responseType == 3) {
+                tmpMessage.setMessage("response_turn_player");
+            } else if (responseType == 4) {
+                tmpMessage.setMessage("response_final_bet");
+            }else if (responseType == 99) {
+                tmpMessage.setMessage("pass_game");
+            }
+
+            if (mMessageSended != null && mMessageSended == tmpMessage.getMessage()) return;
+            Gdx.app.log("debug", "Send Message to Client from Thread line");
+
+            Gdx.app.log("debug", "Send Message To Client: " + cryptCommand(tmpMessage));
+
+            oBW.write(cryptCommand(tmpMessage));
+            oBW.newLine();
+            oBW.flush();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     private void refreshCurrentRoom() {
 
  /*       try {
@@ -435,5 +501,9 @@ public class CommunicationTunnel implements Runnable {
             tmpCommand = Base64Coder.encodeString(tmpCommand);
             return tmpCommand;
         }
+    }
+    public void stopCommunicationChannel(){
+        isRun=false;
+        mMasterSocket.mGameController.stopController();
     }
 }

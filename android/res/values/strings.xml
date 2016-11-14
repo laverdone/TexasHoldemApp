@@ -69,7 +69,6 @@
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="home_banner_id">ca-app-pub-7615079230514788/7492295156</string>
-    <string name="preference_file_key">gameprefs</string>
     <string name="game_sound">game sound</string>
 
 </resources>

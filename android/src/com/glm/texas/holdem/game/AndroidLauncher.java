@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,7 @@ import android.view.Window;
 import android.widget.Button;
 
 
+import com.glm.texas.holdem.game.net.MasterNode;
 import com.glm.texas.holdem.game.utils.ConstValue;
 import com.glm.texas.holdem.game.utils.MediaHelper;
 import com.glm.texas.holdem.game.view.TexasDialog;
@@ -33,12 +35,13 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 	// Client used to interact with Google APIs.
 	private GoogleApiClient mGoogleApiClient;
 	private SharedPreferences sharedPref = null;
+	public MasterNode mMasterNode;
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		sharedPref = getSharedPreferences(
-				getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+				Const.PREF_FILE, Context.MODE_PRIVATE);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -51,8 +54,8 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 
 		MobileAds.initialize(getApplicationContext(), getString(R.string.home_banner_id));
 
-		AdView mAdView = (AdView) findViewById(R.id.adView);
-		AdRequest adRequest = new AdRequest.Builder()
+		final AdView mAdView = (AdView) findViewById(R.id.adView);
+		final AdRequest adRequest = new AdRequest.Builder()
 				.addTestDevice("7437F890CD5ABB529C0526B2159E36DC")
 				.build();
 //        mAdView.setAdUnitId(getString(R.string.home_banner_id));
@@ -80,7 +83,25 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 		exit_btn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				onBackPressed();
+				final TexasDialog mDialog = new TexasDialog(mContext);
+				mDialog.getOk().setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						MediaHelper.exitSound(mContext);
+						mDialog.hide();
+						finish();
+						System.exit(0);
+					}
+				});
+
+				mDialog.getKo().setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						mDialog.dismiss();
+					}
+				});
+				mDialog.setText("Are you sure exit game?");
+				mDialog.show();
 			}
 		});
 
@@ -104,8 +125,10 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 		new_game_btn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//Launch the Game
-				startActivity(new Intent(getApplicationContext(), GameLauncher.class));
+				mMasterNode = new MasterNode();
+				if(mMasterNode.isOnLineGameAvaiable())
+					//Launch the Game
+					startActivity(new Intent(getApplicationContext(), GameLauncher.class));
 			}
 		});
 
@@ -138,7 +161,9 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 			autoLogInPlayGames();
 		}
 
+
 		enableStrictMode();
+
 		MediaHelper.playBackgroundMusic(mContext,false);
 	}
 
@@ -180,7 +205,9 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 			@Override
 			public void onClick(View v) {
 				MediaHelper.exitSound(mContext);
+				mDialog.hide();
 				finish();
+				System.exit(0);
 			}
 		});
 
@@ -207,11 +234,13 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 				// for ActivityCompat#requestPermissions for more details.
 				return;
 			}
-			String personId =  Games.Players.getCurrentPlayerId(mGoogleApiClient);
-			String personName = Games.getCurrentAccountName(mGoogleApiClient);
+			String personId         = Games.Players.getCurrentPlayerId(mGoogleApiClient);
+			String personAccount    = Games.getCurrentAccountName(mGoogleApiClient);
+			String personName       = Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
 			//SharedPreferences sharedPref = context.getSharedPreferences(
 			//        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
 			SharedPreferences.Editor editor = sharedPref.edit();
+			editor.putString("personAccount",personAccount);
 			editor.putString("personName",personName);
 			editor.putString("personId",personId);
 			editor.commit();

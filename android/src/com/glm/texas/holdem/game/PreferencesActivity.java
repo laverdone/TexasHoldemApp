@@ -66,7 +66,7 @@ public class PreferencesActivity extends Activity implements GoogleApiClient.Con
         setContentView(R.layout.activity_preferences);
 
         sharedPref = getSharedPreferences(
-                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                Const.PREF_FILE, Context.MODE_PRIVATE);
 
         isSoundGame = sharedPref.getBoolean(getString(R.string.game_sound), isSoundGame);
 
@@ -203,11 +203,13 @@ public class PreferencesActivity extends Activity implements GoogleApiClient.Con
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-            String personId =  Games.Players.getCurrentPlayerId(mGoogleApiClient);
-            String personName = Games.getCurrentAccountName(mGoogleApiClient);
+            String personId         = Games.Players.getCurrentPlayerId(mGoogleApiClient);
+            String personAccount    = Games.getCurrentAccountName(mGoogleApiClient);
+            String personName       = Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
             //SharedPreferences sharedPref = context.getSharedPreferences(
             //        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("personAccount",personAccount);
             editor.putString("personName",personName);
             editor.putString("personId",personId);
             editor.commit();
@@ -275,10 +277,13 @@ public class PreferencesActivity extends Activity implements GoogleApiClient.Con
                         return;
                     }
                     if(mGoogleApiClient.isConnected()){
-                        String personId =  Games.Players.getCurrentPlayerId(mGoogleApiClient);
-                        String personName = Games.getCurrentAccountName(mGoogleApiClient);
+                        String personId         =  Games.Players.getCurrentPlayerId(mGoogleApiClient);
+                        String personAccount    = Games.getCurrentAccountName(mGoogleApiClient);
+                        String personName       = Games.Players.getCurrentPlayer(mGoogleApiClient).getDisplayName();
                         //SharedPreferences sharedPref = context.getSharedPreferences(
                         //        getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+                        editor = sharedPref.edit();
+                        editor.putString("personAccount",personAccount);
                         editor.putString("personName",personName);
                         editor.putString("personId",personId);
                         editor.commit();

@@ -12,7 +12,7 @@ import java.util.Vector;
  * Created by gianluca on 06/07/16.
  */
 public class Game {
-
+    private static volatile Game mMyInstance;
 
     /**
      * 0=initial timeout
@@ -25,6 +25,11 @@ public class Game {
     private volatile int mGameStatus=0;
     private volatile String mGameStatusDesc="initial timeout";
 
+    private volatile int botTimeout=0;
+    private volatile int umanTimeout=0;
+    private volatile int  roomTimeout=0;
+
+    /**identify the current player (ME)*/
     private volatile Player mGamePlayer;
 
     private volatile Vector<Player> mPlayers = new Vector<Player>();
@@ -32,6 +37,8 @@ public class Game {
     private volatile Vector<Player> mPlayersReTurn = new Vector<Player>();
 
     private volatile Deck mDeck= new Deck();
+
+
 
     public int getNumberOfPlayers() {
         return mNumberOfPlayers;
@@ -48,6 +55,22 @@ public class Game {
     private volatile boolean inGame=false;
     private volatile int mGameTimeout =30000;
     private volatile String mCurrentPlayerUnicheIDTurn="";
+
+    public static void setInstance(Game instance) {
+        mMyInstance = instance;
+    }
+
+
+    public static Game getInstance(){
+        if(mMyInstance==null){
+            synchronized (Game.class){
+                if(mMyInstance==null){
+                    mMyInstance=new Game();
+                }
+            }
+        }
+        return mMyInstance;
+    }
 
     public synchronized Player getmWinner() {
         return mWinner;
@@ -167,5 +190,30 @@ public class Game {
         }else if(mGameStatus==5){
             mGameStatusDesc = "find winner";
         }
+    }
+
+
+    public int getBotTimeout() {
+        return botTimeout;
+    }
+
+    public void setBotTimeout(int botTimeout) {
+        this.botTimeout = botTimeout;
+    }
+
+    public int getUmanTimeout() {
+        return umanTimeout;
+    }
+
+    public void setUmanTimeout(int umanTimeout) {
+        this.umanTimeout = umanTimeout;
+    }
+
+    public int getRoomTimeout() {
+        return roomTimeout;
+    }
+
+    public void setRoomTimeout(int roomTimeout) {
+        this.roomTimeout = roomTimeout;
     }
 }

@@ -23,6 +23,13 @@ public class Game {
      * 5=find winner
      * */
     private volatile int mGameStatus=0;
+    /**
+     * intermediate state of game
+     * E.S.
+     * status=3
+     * substatus=1 redraw changed card
+     * */
+    private volatile int mGameSubStatus=0;
     private volatile String mGameStatusDesc="initial timeout";
 
     private volatile int botTimeout=0;
@@ -37,29 +44,24 @@ public class Game {
     private volatile Vector<Player> mPlayersReTurn = new Vector<Player>();
 
     private volatile Deck mDeck= new Deck();
-
-
-
-    public int getNumberOfPlayers() {
-        return mNumberOfPlayers;
-    }
-
-    public void removeOnePlayers() {
-        mNumberOfPlayers--;
-    }
-
     private volatile int mNumberOfPlayers;
-
-
     private volatile Vector<Integer> iPlayerIndex=new Vector<Integer>();
     private volatile boolean inGame=false;
     private volatile int mGameTimeout =30000;
     private volatile String mCurrentPlayerUnicheIDTurn="";
+    private volatile Player mWinner = null;
+    private volatile String mUnicheID="";
 
-    public static void setInstance(Game instance) {
-        mMyInstance = instance;
+    public Game(){
+        int numberOfPlayers = 4 + (int)(Math.random() * 2);
+        DateFormat formatter1 = new SimpleDateFormat("yyyymmddHHmmssSSSSSS");
+        mUnicheID=formatter1.format(new Date());
+        mUnicheID = String.valueOf(0 + (Math.random() * Float.parseFloat(mUnicheID)));
+        mUnicheID=mUnicheID.replace(".","");
+
+        mNumberOfPlayers=numberOfPlayers;
+
     }
-
 
     public static Game getInstance(){
         if(mMyInstance==null){
@@ -72,6 +74,18 @@ public class Game {
         return mMyInstance;
     }
 
+    public static void setInstance(Game instance) {
+        mMyInstance = instance;
+    }
+
+    public int getNumberOfPlayers() {
+        return mNumberOfPlayers;
+    }
+
+    public void removeOnePlayers() {
+        mNumberOfPlayers--;
+    }
+
     public synchronized Player getmWinner() {
         return mWinner;
     }
@@ -80,8 +94,6 @@ public class Game {
         this.mWinner = mWinner;
     }
 
-    private volatile Player mWinner = null;
-
     public synchronized Vector<Integer> getiPlayerIndex() {
         return iPlayerIndex;
     }
@@ -89,6 +101,7 @@ public class Game {
     public synchronized void setiPlayerIndex(Integer index) {
         iPlayerIndex.add(index);
     }
+
     public synchronized Integer removeiPlayerIndex(int iMe) {
         return iPlayerIndex.remove(iMe);
     }
@@ -105,20 +118,6 @@ public class Game {
         return mUnicheID;
     }
 
-
-    private volatile String mUnicheID="";
-
-    public Game(){
-        int numberOfPlayers = 4 + (int)(Math.random() * 2);
-        DateFormat formatter1 = new SimpleDateFormat("yyyymmddHHmmssSSSSSS");
-        mUnicheID=formatter1.format(new Date());
-        mUnicheID = String.valueOf(0 + (Math.random() * Float.parseFloat(mUnicheID)));
-        mUnicheID=mUnicheID.replace(".","");
-
-        mNumberOfPlayers=numberOfPlayers;
-
-    }
-
     public synchronized String getCurrentPlayerUnicheIDTurn() {
         return mCurrentPlayerUnicheIDTurn;
     }
@@ -129,6 +128,23 @@ public class Game {
 
     public synchronized int getGameStatus() {
         return mGameStatus;
+    }
+
+    public void setGameStatus(int gameStatus) {
+        mGameStatus = gameStatus;
+        if(mGameStatus==0){
+            mGameStatusDesc = "initial timeout";
+        }else if(mGameStatus==1){
+            mGameStatusDesc = "start the game";
+        }else if(mGameStatus==2){
+            mGameStatusDesc = "first bet";
+        }else if(mGameStatus==3){
+            mGameStatusDesc = "turn over players";
+        }else if(mGameStatus==4){
+            mGameStatusDesc = "final bet";
+        }else if(mGameStatus==5){
+            mGameStatusDesc = "find winner";
+        }
     }
 
     public synchronized Vector<Player> getPlayers() {
@@ -146,7 +162,6 @@ public class Game {
     public synchronized void setDeck(Deck deck) {
         mDeck = deck;
     }
-
 
     public synchronized void replacePlayer(Player tmpPlayer) {
         int i=0;
@@ -167,31 +182,13 @@ public class Game {
     public Player getGamePlayer(){
         return mGamePlayer;
     }
+
     /**
      * set player in game
      * */
     public void setGamePlayer(Player player){
         mGamePlayer=player;
     }
-
-
-    public void setGameStatus(int gameStatus) {
-        mGameStatus = gameStatus;
-        if(mGameStatus==0){
-            mGameStatusDesc = "initial timeout";
-        }else if(mGameStatus==1){
-            mGameStatusDesc = "start the game";
-        }else if(mGameStatus==2){
-            mGameStatusDesc = "first bet";
-        }else if(mGameStatus==3){
-            mGameStatusDesc = "turn over players";
-        }else if(mGameStatus==4){
-            mGameStatusDesc = "final bet";
-        }else if(mGameStatus==5){
-            mGameStatusDesc = "find winner";
-        }
-    }
-
 
     public int getBotTimeout() {
         return botTimeout;
@@ -215,5 +212,13 @@ public class Game {
 
     public void setRoomTimeout(int roomTimeout) {
         this.roomTimeout = roomTimeout;
+    }
+
+    public int getGameSubStatus() {
+        return mGameSubStatus;
+    }
+
+    public void setGameSubStatus(int mGameSubStatus) {
+        this.mGameSubStatus = mGameSubStatus;
     }
 }

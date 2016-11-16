@@ -48,9 +48,9 @@ public class GameWorld {
     }
 
     public void createWorld(){
-        mGround     = new LayerBackground(mStageGame.getWidth(),mStageGame.getHeight());
-        mLevel      = new LayerLevel(mGame, mStageGame.getWidth(),mStageGame.getHeight());
-        mHub        = new LayerHub(mGame, mStageGame.getWidth(),mStageGame.getHeight());
+        mGround = new LayerBackground(this, mStageGame.getWidth(), mStageGame.getHeight());
+        mLevel = new LayerLevel(this, mGame, mStageGame.getWidth(), mStageGame.getHeight());
+        mHub = new LayerHub(this, mGame, mStageGame.getWidth(), mStageGame.getHeight());
     }
 
     public void update(float delta) {

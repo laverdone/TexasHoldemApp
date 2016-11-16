@@ -112,4 +112,8 @@ public class GameScreen
     public void firstBet() {
         mGameRenderer.firstBet();
     }
+
+    public void changeCard() {
+        mGameRenderer.changeCard();
+    }
 }

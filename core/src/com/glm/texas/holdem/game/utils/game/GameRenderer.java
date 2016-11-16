@@ -129,4 +129,8 @@ public class GameRenderer {
     public void firstBet() {
         mWorld.getmHub().firstBet();
     }
+
+    public void changeCard() {
+        mWorld.getmHub().changeCard();
+    }
 }

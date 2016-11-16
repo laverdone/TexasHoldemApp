@@ -3,6 +3,7 @@ package com.glm.texas.holdem.game.utils.layers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.glm.texas.holdem.game.utils.actors.GenericImage;
+import com.glm.texas.holdem.game.utils.game.GameWorld;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ public class LayerBackground {
     private float mWidth, mHeight;
     private GenericImage mBackgroundGame;
 
-    public LayerBackground(float width, float height) {
+    public LayerBackground(GameWorld gameWorld, float width, float height) {
         mWidth = width;
         mHeight = height;
         mBackgroundGame = new GenericImage("data/background/green.jpg", 0, 0, mWidth, mHeight, true);

@@ -17,6 +17,7 @@ import com.glm.texas.holdem.game.utils.RearrangeUtils;
 import com.glm.texas.holdem.game.utils.actors.ButtonUI;
 import com.glm.texas.holdem.game.utils.actors.Coin;
 import com.glm.texas.holdem.game.utils.game.GameTexasHoldem;
+import com.glm.texas.holdem.game.utils.game.GameWorld;
 
 /**
  * Contains the level games with distance, difficult ad so on
@@ -42,19 +43,27 @@ public class LayerHub
 
     private Preferences mPrefs;
     private GameTexasHoldem mGame;
+    private GameWorld mWorld;
     private float mWidth, mHeight;
 
     private int mMoneyToBet=0;
 
     private Coin mCoin;
+    //if user has bet
+    private boolean isBet = false;
+    //if user as check
+    private boolean isCheck = false;
+    //if user as changed card
+    private boolean isChanged = false;
     /**
      *
      * */
-    public LayerHub(GameTexasHoldem game, float width, float height)
+    public LayerHub(GameWorld gameWorld, GameTexasHoldem game, float width, float height)
     {
         mWidth  = width;
         mHeight = height;
         mGame   = game;
+        mWorld = gameWorld;
 
         mPrefs = Gdx.app.getPreferences(Const.PREF_FILE);
         /**load font for game progress*/
@@ -93,6 +102,8 @@ public class LayerHub
                 mPlayButton.setUnPressed();
                 //TODO Sent Message To Server
                 GameTexasHoldem.mCommunicationChannel.sendMessageToServer(3);
+                mWorld.getLevel().changeCard();
+                isChanged = true;
             }
         });
 
@@ -114,6 +125,13 @@ public class LayerHub
                 Player.getInstance().setMoney(Player.getInstance().getMoney()-mMoneyToBet);
                 //TODO Sent Message To Server
                 GameTexasHoldem.mCommunicationChannel.sendMessageToServer(2);
+                mPlayButton.setVisible(false);
+                mBetButton.setVisible(false);
+                mPlayButton.setVisible(false);
+                mMinusButton.setVisible(false);
+                mPlusButton.setVisible(false);
+                mNoButton.setVisible(false);
+                isBet = true;
             }
         });
 
@@ -207,6 +225,7 @@ public class LayerHub
         mGame.mStageGame.addActor(mNoButton);
 
         mCoin = new Coin(mMoneyToBet);
+        mGame.mStageGame.addActor(mCoin);
     }
 
     public void render(SpriteBatch spritebatch)
@@ -223,6 +242,7 @@ public class LayerHub
         mNoButton.draw(spritebatch);
 
         mCoin.draw(spritebatch);
+
         /**
          *  return Math.round((float)(i * Gdx.graphics.getWidth()) / Const.DEFAULT_WIDTH);
          * */
@@ -236,7 +256,7 @@ public class LayerHub
                 RearrangeUtils.getOffsetX(40F),
                 RearrangeUtils.getOffsetY(720F));
 
-        mFont.draw(spritebatch,"dish "+String.valueOf(mMoneyToBet),
+        mFont.draw(spritebatch, "dish " + String.valueOf(Game.getInstance().getDeck().getMoney()),
                 RearrangeUtils.getOffsetX(150F),
                 RearrangeUtils.getOffsetY(500F));
 
@@ -256,6 +276,7 @@ public class LayerHub
      * game is open but only for view cards, hide all button
      * */
     public void openGame() {
+        mPlayButton.setVisible(true);
         mBetButton.setVisible(false);
         mPlayButton.setVisible(false);
         mMinusButton.setVisible(false);
@@ -269,12 +290,45 @@ public class LayerHub
      * TODO implements bet button
      * */
     public void firstBet() {
-        if(Player.getInstance().isCanOpen()) {
+        if (isBet) return;
+        if (!Game.getInstance().getDeck().isOpen() && Player.getInstance().isCanOpen()) {
             mBetButton.setVisible(true);
             mMinusButton.setVisible(true);
             mPlusButton.setVisible(true);
             mNoButton.setVisible(true);
             mPlayButton.setVisible(false);
+        } else if (Game.getInstance().getDeck().isOpen()) {
+            mBetButton.setVisible(true);
+            mMinusButton.setVisible(true);
+            mPlusButton.setVisible(true);
+            mNoButton.setVisible(true);
+            mPlayButton.setVisible(false);
+        } else {
+            //Auto Response no able to Open Games
+            if (!isCheck) {
+                GameTexasHoldem.mCommunicationChannel.sendMessageToServer(20);
+                isCheck = true;
+            }
         }
+    }
+
+    public void changeCard() {
+        if (!isChanged) {
+            mPlayButton.setVisible(true);
+            mBetButton.setVisible(false);
+            mPlayButton.setVisible(false);
+            mMinusButton.setVisible(false);
+            mPlusButton.setVisible(false);
+            mNoButton.setVisible(false);
+        } else {
+            mPlayButton.setVisible(false);
+            mBetButton.setVisible(false);
+            mPlayButton.setVisible(false);
+            mMinusButton.setVisible(false);
+            mPlusButton.setVisible(false);
+            mNoButton.setVisible(false);
+            mWorld.getLevel().redrawCardChanged();
+        }
+
     }
 }

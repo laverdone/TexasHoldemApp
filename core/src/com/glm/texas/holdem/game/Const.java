@@ -29,26 +29,22 @@ public class Const {
     public static final String PREF_FILE="gameprefs";
     public static final float SCALE_FACTOR = 0.7f;
     public static final float PADDING_Y = 20f;
-    public static float PADDING_X = 20f;
+    public static final float OUT_OF_SCREEN = -4000f;
     /**Game status Fields*/
     public static final int GAME_STOP     =   0;
     public static final int GAME_START    =   1;
     public static final int GAME_END      =   2;
     public static final int GAME_PAUSE    =   3;
-
     public static final int STEP_TIMEOUT = 5000;
-
     public static final int INITIAL_MONEY = 10;
-
     public static final boolean DEBUG=true;
-
     public static final boolean CLEAR_COMMAND =true;
     public static final float MY_CARD_OFFSET = 4f;
     /**default screen resolution*/
     public static final int DEFAULT_WIDTH=1280;
     /**default screen resolution*/
     public static final int DEFAULT_HEIGHT=720;
-
     public static final int TOUCH_TO_STORE = 30;
+    public static float PADDING_X = 20f;
 
 }

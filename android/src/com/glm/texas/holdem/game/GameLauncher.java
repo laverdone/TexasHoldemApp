@@ -37,4 +37,10 @@ public class GameLauncher extends AndroidApplication implements GameCallback {
         Intent intent = new Intent(this, AndroidLauncher.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        //TODO Back on Game
+        return;
+    }
 }

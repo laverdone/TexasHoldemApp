@@ -31,11 +31,12 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.games.Games;
 
 public class AndroidLauncher extends Activity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
+	public MasterNode mMasterNode;
 	private Context mContext =null;
 	// Client used to interact with Google APIs.
 	private GoogleApiClient mGoogleApiClient;
 	private SharedPreferences sharedPref = null;
-	public MasterNode mMasterNode;
+
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -165,6 +166,14 @@ public class AndroidLauncher extends Activity implements GoogleApiClient.Connect
 		enableStrictMode();
 
 		MediaHelper.playBackgroundMusic(mContext,false);
+	}
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+		if (sharedPref.getBoolean("playgames", false)) {
+			autoLogInPlayGames();
+		}
 	}
 
 	private void autoLogInPlayGames() {

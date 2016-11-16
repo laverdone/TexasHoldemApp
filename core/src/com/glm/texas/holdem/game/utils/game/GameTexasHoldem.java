@@ -100,10 +100,11 @@ public class GameTexasHoldem extends Game {
         }else if( com.glm.texas.holdem.game.Game.getInstance().getGameStatus()==3){
             //turn card
             mGameScreen.render(mElapsedTime);
+            mGameScreen.changeCard();
         }else if( com.glm.texas.holdem.game.Game.getInstance().getGameStatus()==4){
             //final bet
             mGameScreen.render(mElapsedTime);
-            mGameScreen.shuffleCard();
+            //mGameScreen.shuffleCard();
         }else{
             mGameScreen.render(mElapsedTime);
         }

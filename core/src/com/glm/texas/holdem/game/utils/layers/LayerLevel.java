@@ -5,8 +5,11 @@
 package com.glm.texas.holdem.game.utils.layers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -15,6 +18,7 @@ import com.glm.texas.holdem.game.Game;
 import com.glm.texas.holdem.game.utils.actors.ButtonUI;
 import com.glm.texas.holdem.game.utils.actors.Card;
 import com.glm.texas.holdem.game.utils.game.GameTexasHoldem;
+import com.glm.texas.holdem.game.utils.game.GameWorld;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +50,7 @@ public class LayerLevel {
     /**
      *
      * */
-    public LayerLevel(GameTexasHoldem game, float width, float height) {
+    public LayerLevel(GameWorld gameWorld, GameTexasHoldem game, float width, float height) {
         mGame = game;
         mOnLineGame = Game.getInstance();
         mWidth = width;
@@ -240,5 +244,26 @@ public class LayerLevel {
 
         spritebatch.end();
 
+    }
+
+    /**
+     * Call when user confirm to Change card
+     */
+    public void changeCard() {
+        for (int i = 0; i < 5; i++) {
+            Card cartToChange = mMyCards.get(i);
+            if (!cartToChange.getHold()) {
+                //animateOut
+                mMyCards.get(i).addAction(Actions.moveTo(Const.OUT_OF_SCREEN, Const.OUT_OF_SCREEN, Const.DURATION));
+                mMyCards.set(i, null);
+            }
+        }
+    }
+
+    /**
+     * redraw the card
+     */
+    public void redrawCardChanged() {
+        initMyCard();
     }
 }
